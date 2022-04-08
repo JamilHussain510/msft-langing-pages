@@ -1,0 +1,2168 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>
+      The Data Privacy Dilemma: How CDP Supports A Seamless Privacy Compliance
+      Posture
+    </title>
+
+    <meta
+      name="og:title"
+      content="The Data Privacy Dilemma: How CDP Supports A Seamless Privacy Compliance Posture"
+    />
+    <meta http-equiv="expires" value="Sat, 1 Jan 2000 11:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" type="text/css" href="../../Common/form.css" />
+    <link rel="stylesheet" type="text/css" href="../../Common/formNegCap.css" />
+    <script async="" src="../../Common/8563"></script>
+    <script type="text/javascript" src="../../Common/prototype.js"></script>
+    <script type="text/javascript" src="../../Common/form.js"></script>
+    <script type="text/javascript">
+      var requiredFields = new Array(); //	[id]
+      var requiredFieldGroups = new Array(); //	[id,count]
+      function addRequiredField(id) {
+        requiredFields.push(id);
+      }
+      function addRequiredFieldGroup(id, count) {
+        requiredFieldGroups.push([id, count]);
+      }
+      function missing(fieldName) {
+        var f = document.getElementById(fieldName);
+        var v = $F(fieldName);
+        if (v) {
+          //	Trim
+          v = v.replace(/^\s*(.*)/, "$1");
+          v = v.replace(/(.*?)\s*$/, "$1");
+        }
+        if (!v) {
+          f.style.backgroundColor = "#FFFFCC";
+          return 1;
+        } else {
+          f.style.backgroundColor = "";
+          return 0;
+        }
+      }
+      function missingGroup(fieldName, count) {
+        var found = false;
+        for (var i = 0; i < count; i++) {
+          if (document.getElementById(fieldName + "-" + i).checked) {
+            found = true;
+            break;
+          }
+        }
+        if (found) {
+          for (var i = 0; i < count; i++)
+            document.getElementById(
+              fieldName + "-" + i
+            ).parentNode.style.backgroundColor = "";
+          return 0;
+        } else {
+          for (var i = 0; i < count; i++)
+            document.getElementById(
+              fieldName + "-" + i
+            ).parentNode.style.backgroundColor = "#FFFFCC";
+          return 1;
+        }
+      }
+      var validatedFields = new Array();
+      function addFieldToValidate(id, validationType, arg1, arg2) {
+        validatedFields.push([id, validationType, arg1, arg2]);
+      }
+      function validateField(id, fieldValidationValue, arg1, arg2) {
+        var field = document.getElementById(id);
+        var name = field.name;
+        var value = $F(id);
+        for (var i = 0; i < validators.length; i++) {
+          var validationDisplay = validators[i][3];
+          var validationValue = validators[i][1];
+          var validationFunction = validators[i][2];
+          if (validationValue === fieldValidationValue) {
+            if (!validationFunction(value, arg1, arg2, id)) {
+              field.style.backgroundColor = "#FFFFCC";
+              // alert (name + ': ' + validationDisplay);
+              alert(validationDisplay);
+              return false;
+            } else {
+              field.style.backgroundColor = "";
+            }
+            break;
+          }
+        }
+        for (var i = 0; i < implicitValidators.length; i++) {
+          var validationDisplay = implicitValidators[i][0];
+          var validationValue = implicitValidators[i][1];
+          var validationFunction = implicitValidators[i][2];
+          if (validationValue === fieldValidationValue) {
+            if (!validationFunction(value, arg1, arg2, id)) {
+              field.style.backgroundColor = "#FFFFCC";
+              // alert (name + ': ' + validationDisplay);
+              alert(validationDisplay);
+              return false;
+            } else {
+              field.style.backgroundColor = "";
+            }
+            break;
+          }
+        }
+        return true;
+      }
+      var r = "l-0eef:1";
+      var doPrefill = 0;
+      function doPrefillOnloadDone(ajax) {}
+      function doPrefillOnload() {
+        if (r && r.length > 0 && doPrefill) {
+          var parms =
+            "a=8563&id=114f&r=" +
+            r +
+            "&did=114f:d-0002&ts=" +
+            new Date().getTime() +
+            "&sid=TV2:jMprPH4Ll";
+          new Ajax.Updater("prefillDiv", "/acton/forms/prefillAjax.jsp", {
+            method: "get",
+            parameters: parms,
+            evalScripts: true,
+            onComplete: doPrefillOnloadDone,
+          });
+        }
+      }
+      getParameter = function (parameterName) {
+        var search = window.location.search;
+        var queryString =
+          search != null && search.length > 0
+            ? window.location.search.substring(1)
+            : "";
+        if (queryString.length == 0) return null;
+        var begin = queryString.indexOf(parameterName + "=");
+        if (begin == -1) return null;
+        begin += parameterName.length + 1;
+        var end = queryString.indexOf("&", begin);
+        if (end == -1) end = queryString.length;
+        return unescape(queryString.substring(begin, end));
+      };
+      if (getParameter("validRecaptcha")) {
+        alert("The Captcha value entered was incorrect.  Please try again.");
+      }
+      function doOnLoad() {
+        document.getElementById("ao_jstzo").value =
+          new Date().getTimezoneOffset();
+        var refURL = document.referrer;
+        if (window.location.href.indexOf("embedded=1") !== -1) {
+          try {
+            var parentReferrer = parent.getReferrerHeader();
+            if (!parentReferrer || parentReferrer == "")
+              refURL = getParameter("refUrl");
+            else refURL = parentReferrer;
+          } catch (e) {
+            refURL = getParameter("refUrl");
+          }
+        }
+        if (refURL != null) document.getElementById("ao_refurl").value = refURL;
+        doPrefillOnload();
+      }
+      function doSubmit(form) {
+        try {
+          if (typeof customSubmitProcessing === "function")
+            customSubmitProcessing();
+        } catch (err) {}
+        var submitButton = document.getElementById(
+          form.id + "_ao_submit_button"
+        );
+        submitButton.style.visibility = "hidden";
+        //	Check required fields
+        var missingCount = 0;
+        for (var i = 0; i < requiredFields.length; i++)
+          missingCount += missing(requiredFields[i]);
+        for (var i = 0; i < requiredFieldGroups.length; i++)
+          missingCount += missingGroup(
+            requiredFieldGroups[i][0],
+            requiredFieldGroups[i][1]
+          );
+        if (missingCount > 0) {
+          alert("Please fill all required (*) fields. ");
+          submitButton.style.visibility = "visible";
+          return;
+        }
+        //	Validate all fields
+        for (var i = 0; i < validatedFields.length; i++) {
+          var ff = validatedFields[i];
+          if (!validateField(ff[0], ff[1], ff[2], ff[3])) {
+            document.getElementById(ff[0]).focus();
+            submitButton.style.visibility = "visible";
+            return;
+          }
+        }
+        //	Make sure it is not a preview situation
+        if (document.getElementById("ao_p").value === "1") {
+          submitButton.style.visibility = "visible";
+          return;
+        }
+        // Enable the form handler
+        document.getElementById("ao_bot").value = "nope";
+        try {
+          // Save the parent href if the form is in an iframe
+          document.getElementById("ao_iframe").value = window.parent
+            ? window.parent.location.href
+            : "";
+        } catch (xxx) {}
+        // Submit
+        form.submit();
+      }
+    </script>
+  </head>
+  <body onload="doOnLoad()">
+    <form
+      id="form_114f"
+      enctype="multipart/form-data"
+      action="The-Data-Privacy-Dilemma-ca.pdf"
+      accept-charset="UTF-8"
+      target="_top"
+    >
+      <input type="hidden" name="ao_a" value="8563" />
+      <input type="hidden" name="ao_f" value="114f" />
+      <input type="hidden" name="ao_d" value="114f:d-0002" />
+      <input type="hidden" name="ao_p" id="ao_p" value="0" />
+      <input type="hidden" name="ao_jstzo" id="ao_jstzo" value="-330" />
+      <input type="hidden" name="ao_refurl" id="ao_refurl" value="-" />
+      <input type="hidden" name="ao_cuid" value="l-0eef:1" />
+      <input type="hidden" name="ao_srcid" value="l-0eef" />
+      <input type="hidden" name="ao_nc" value="" />
+      <input type="hidden" name="ao_pf" value="0" />
+      <input type="hidden" name="ao_bot" id="ao_bot" value="yes" />
+      <input type="hidden" name="ao_iframe" id="ao_iframe" value="" />
+      <input
+        type="hidden"
+        name="ao_camp"
+        value="Page:The Data Privacy Dilemma: How CDP Supports A Seamless Privacy Compliance Posture"
+      />
+      <input type="hidden" name="ao_campid" value="" />
+      <!-- -------------------------------------------------------------------------------------------- -->
+      <!--[if mso]><table><tr><td width="650"><![endif]-->
+      <table
+        border="0"
+        cellpadding="0"
+        cellspacing="0"
+        align="center"
+        style="margin: 0 auto"
+      >
+        <tbody>
+          <tr>
+            <td align="center" style="margin: 0 auto"></td>
+          </tr>
+          <tr>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <style type="text/css">
+                table,
+                tr,
+                td,
+                body,
+                p,
+                div,
+                span,
+                textarea,
+                input,
+                select,
+                a,
+                ul,
+                ol {
+                  font-family: helvetica neue, arial, helvetica, sans-serif !important;
+                  font-size: 10pt !important;
+                }
+              </style>
+              <link rel="stylesheet" type="text/css" href="./form(1).css" />
+              <div
+                id="ao_alignment_container"
+                class="aoFormContainer"
+                align="center"
+              >
+                <table
+                  class="ao_tbl_container"
+                  border="0"
+                  cellspacing="0"
+                  cellpadding="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td
+                        class="ao_tbl_cell"
+                        style="padding-left: 10px; padding-right: 10px"
+                        align="center"
+                      >
+                        <div class="formField">
+                          <div class="formSectionDescription">
+                            <div width="200">
+                              <pre
+                                class="tw-data-text tw-text-large tw-ta"
+                                data-placeholder="Translation"
+                                id="tw-target-text"
+                                dir="ltr"
+                              ><strong><span tabindex="0" lang="sv">Registration Details</span></strong></pre>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="ao_tbl_cell"
+                        style="padding-left: 10px; padding-right: 10px"
+                        align="center"
+                      >
+                        <div class="formInputBlock">
+                          <div align="left">
+                            <div class="formField">
+                              <div
+                                class="formFieldLabel"
+                                id="form_114f_fld_1-Label"
+                              >
+                                <label for="form_114f_fld_1">First Name</label
+                                ><b
+                                  style="color: #ff0000; cursor: default"
+                                  title="Required Field"
+                                  >*</b
+                                >
+                              </div>
+                              <input
+                                type="text"
+                                class="formFieldText formFieldMedium"
+                                id="form_114f_fld_1"
+                                name="FirstName"
+                              />
+                            </div>
+                            <script type="text/javascript">
+                              if (typeof addRequiredField != "undefined") {
+                                addRequiredField("form_114f_fld_1");
+                              }
+                            </script>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="ao_tbl_cell"
+                        style="padding-left: 10px; padding-right: 10px"
+                        align="center"
+                      >
+                        <div class="formInputBlock">
+                          <div align="left">
+                            <div class="formField">
+                              <div
+                                class="formFieldLabel"
+                                id="form_114f_fld_2-Label"
+                              >
+                                <label for="form_114f_fld_2">Last Name</label
+                                ><b
+                                  style="color: #ff0000; cursor: default"
+                                  title="Required Field"
+                                  >*</b
+                                >
+                              </div>
+                              <input
+                                type="text"
+                                class="formFieldText formFieldMedium"
+                                id="form_114f_fld_2"
+                                name="LastName"
+                              />
+                            </div>
+                            <script type="text/javascript">
+                              if (typeof addRequiredField != "undefined") {
+                                addRequiredField("form_114f_fld_2");
+                              }
+                            </script>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="ao_tbl_cell"
+                        style="padding-left: 10px; padding-right: 10px"
+                        align="center"
+                      >
+                        <div class="formInputBlock">
+                          <div align="left">
+                            <div class="formField">
+                              <div
+                                class="formFieldLabel"
+                                id="form_114f_fld_3-Label"
+                              >
+                                <label for="form_114f_fld_3">Work Email</label
+                                ><b
+                                  style="color: #ff0000; cursor: default"
+                                  title="Required Field"
+                                  >*</b
+                                >
+                              </div>
+                              <input
+                                type="text"
+                                class="formFieldText formFieldMedium"
+                                id="form_114f_fld_3"
+                                name="Email"
+                              />
+                            </div>
+                            <script type="text/javascript">
+                              if (typeof addRequiredField != "undefined") {
+                                addRequiredField("form_114f_fld_3");
+                              }
+                            </script>
+                            <script type="text/javascript">
+                              if (typeof addFieldToValidate != "undefined") {
+                                addFieldToValidate(
+                                  "form_114f_fld_3",
+                                  "NPEMAIL"
+                                );
+                              }
+                            </script>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="ao_tbl_cell"
+                        style="padding-left: 10px; padding-right: 10px"
+                        align="center"
+                      >
+                        <div class="formInputBlock">
+                          <div align="left">
+                            <div class="formField">
+                              <div
+                                class="formFieldLabel"
+                                id="form_114f_fld_4-Label"
+                              >
+                                <label for="form_114f_fld_4">Company Name</label
+                                ><b
+                                  style="color: #ff0000; cursor: default"
+                                  title="Required Field"
+                                  >*</b
+                                >
+                              </div>
+                              <input
+                                type="text"
+                                class="formFieldText formFieldMedium"
+                                id="form_114f_fld_4"
+                                name="Company"
+                              />
+                            </div>
+                            <script type="text/javascript">
+                              if (typeof addRequiredField != "undefined") {
+                                addRequiredField("form_114f_fld_4");
+                              }
+                            </script>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="ao_tbl_cell"
+                        style="padding-left: 10px; padding-right: 10px"
+                        align="center"
+                      >
+                        <div class="formInputBlock">
+                          <div align="left">
+                            <div class="formField">
+                              <div class="formFieldLabel">
+                                <label for="form_114f_fld_10"
+                                  >Company Size</label
+                                ><b
+                                  style="color: #ff0000; cursor: default"
+                                  title="Required Field"
+                                  >*</b
+                                >
+                              </div>
+                              <select
+                                size="1"
+                                id="form_114f_fld_10"
+                                name="CompanySize"
+                                class="formFieldMedium"
+                              >
+                                <option value=""></option>
+                                <option id="form_114f_fld_10-0" value="10,000+">
+                                  10,000+
+                                </option>
+                                <option
+                                  id="form_114f_fld_10-1"
+                                  value="1,000-9,999"
+                                >
+                                  1,000-9,999
+                                </option>
+                                <option id="form_114f_fld_10-2" value="250-999">
+                                  250-999
+                                </option>
+                                <option id="form_114f_fld_10-3" value="100-249">
+                                  100-249
+                                </option>
+                                <option id="form_114f_fld_10-4" value="50-99">
+                                  50-99
+                                </option>
+                                <option id="form_114f_fld_10-5" value="25-49">
+                                  25-49
+                                </option>
+                                <option id="form_114f_fld_10-6" value="10-24">
+                                  10-24
+                                </option>
+                                <option id="form_114f_fld_10-7" value="5-9">
+                                  5-9
+                                </option>
+                                <option id="form_114f_fld_10-8" value="2-4">
+                                  2-4
+                                </option>
+                                <option id="form_114f_fld_10-9" value="1">
+                                  1
+                                </option>
+                              </select>
+                            </div>
+                            <script type="text/javascript">
+                              if (typeof addRequiredField != "undefined") {
+                                addRequiredField("form_114f_fld_10");
+                              }
+                            </script>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <!--<tr>
+				<td class="ao_tbl_cell" style="padding-left: 10px; padding-right: 10px" align="center">
+					<div class="formInputBlock"><div align="left">
+	<div class="formField">
+		<div class="formFieldLabel" id="form_114f_fld_4-Label"><label for="form_114f_fld_4">Job Title</label><b style="color: #FF0000; cursor: default" title="Required Field">*</b></div>
+		<input type="text" class="formFieldText formFieldMedium" id="form_114f_fld_4" name="Title">
+	</div>
+	<script type="text/javascript">
+		if (typeof(addRequiredField) != 'undefined')
+			{
+			addRequiredField ('form_114f_fld_4');
+			}
+	</script>
+					</div></div>					
+				</td>
+			</tr>-->
+                    <tr>
+                      <td
+                        class="ao_tbl_cell"
+                        style="padding-left: 10px; padding-right: 10px"
+                        align="center"
+                      >
+                        <div class="formInputBlock">
+                          <div align="left">
+                            <div class="formField">
+                              <div class="formFieldLabel">
+                                <label for="form_114f_fld_5">Job Role</label
+                                ><b
+                                  style="color: #ff0000; cursor: default"
+                                  title="Required Field"
+                                  >*</b
+                                >
+                              </div>
+                              <select
+                                size="1"
+                                id="form_114f_fld_5"
+                                name="JobRole"
+                                class="formFieldMedium"
+                              >
+                                <option value=""></option>
+                                <option id="form_114f_fld_5-0" value="Owner">
+                                  Owner
+                                </option>
+                                <option
+                                  id="form_114f_fld_5-1"
+                                  value="Chief Officer"
+                                >
+                                  Chief Officer
+                                </option>
+                                <option
+                                  id="form_114f_fld_5-2"
+                                  value="Vice President"
+                                >
+                                  Vice President
+                                </option>
+                                <option id="form_114f_fld_5-3" value="Director">
+                                  Director
+                                </option>
+                                <option id="form_114f_fld_5-4" value="Manager">
+                                  Manager
+                                </option>
+                                <option
+                                  id="form_114f_fld_5-5"
+                                  value="Individual Contributor/Staff"
+                                >
+                                  Individual Contributor/Staff
+                                </option>
+                                <option id="form_114f_fld_5-6" value="Student">
+                                  Student
+                                </option>
+                              </select>
+                            </div>
+                            <script type="text/javascript">
+                              if (typeof addRequiredField != "undefined") {
+                                addRequiredField("form_114f_fld_5");
+                              }
+                            </script>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="ao_tbl_cell"
+                        style="padding-left: 10px; padding-right: 10px"
+                        align="center"
+                      >
+                        <div class="formInputBlock">
+                          <div align="left">
+                            <div class="formField">
+                              <div class="formFieldLabel">
+                                <label for="form_114f_fld_6"
+                                  >Job Department</label
+                                ><b
+                                  style="color: #ff0000; cursor: default"
+                                  title="Required Field"
+                                  >*</b
+                                >
+                              </div>
+                              <select
+                                size="1"
+                                id="form_114f_fld_6"
+                                name="Department"
+                                class="formFieldMedium"
+                              >
+                                <option value=""></option>
+                                <option id="form_114f_fld_6-0" value="Owner">
+                                  Owner
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-1"
+                                  value="Human Resources"
+                                >
+                                  Human Resources
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-2"
+                                  value="Sales/Business Development"
+                                >
+                                  Sales/Business Development
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-3"
+                                  value="Legal/Privacy/Compliance​​​​"
+                                >
+                                  Legal/Privacy/Compliance​​
+                                </option>
+                                <option id="form_114f_fld_6-4" value="Finance">
+                                  Finance
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-5"
+                                  value="Marketing"
+                                >
+                                  Marketing
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-6"
+                                  value="Operations"
+                                >
+                                  Operations
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-7"
+                                  value="Customer Service"
+                                >
+                                  Customer Service
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-8"
+                                  value="Cybersecurity"
+                                >
+                                  Cybersecurity
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-9"
+                                  value="Developer/Engineering"
+                                >
+                                  Developer/Engineering
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-10"
+                                  value="Data/Business Intelligence"
+                                >
+                                  Data/Business Intelligence
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-11"
+                                  value="Infrastructure & Technology Management"
+                                >
+                                  Infrastructure & Technology Management
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-12"
+                                  value="Procurement"
+                                >
+                                  Procurement
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-13"
+                                  value="Frontline Operations"
+                                >
+                                  Frontline Operations
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-14"
+                                  value="Retail Operations"
+                                >
+                                  Retail Operations
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-15"
+                                  value="Manufacturing"
+                                >
+                                  Manufacturing
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-16"
+                                  value="Supply Chain"
+                                >
+                                  Supply Chain
+                                </option>
+                                <option
+                                  id="form_114f_fld_6-17"
+                                  value="Customer/Field Support"
+                                >
+                                  Customer/Field Support
+                                </option>
+                              </select>
+                            </div>
+                            <script type="text/javascript">
+                              if (typeof addRequiredField != "undefined") {
+                                addRequiredField("form_114f_fld_6");
+                              }
+                            </script>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="ao_tbl_cell"
+                        style="padding-left: 10px; padding-right: 10px"
+                        align="center"
+                      >
+                        <div class="formInputBlock">
+                          <div align="left">
+                            <div class="formField">
+                              <div
+                                class="formFieldLabel"
+                                id="form_114f_fld_7-Label"
+                              >
+                                <label for="form_114f_fld_7">Phone</label
+                                ><b
+                                  style="color: #ff0000; cursor: default"
+                                  title="Required Field"
+                                  >*</b
+                                >
+                              </div>
+                              <input
+                                type="text"
+                                class="formFieldText formFieldMedium"
+                                id="form_114f_fld_7"
+                                name="Phone"
+                              />
+                            </div>
+                            <script type="text/javascript">
+                              if (typeof addRequiredField != "undefined") {
+                                addRequiredField("form_114f_fld_7");
+                              }
+                            </script>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td
+                        class="ao_tbl_cell"
+                        style="padding-left: 10px; padding-right: 10px"
+                        align="center"
+                      >
+                        <div class="formInputBlock">
+                          <div align="left">
+                            <div class="formField">
+                              <div class="formFieldLabel">
+                                <label for="form_114f_fld_9">Country</label
+                                ><b
+                                  style="color: #ff0000; cursor: default"
+                                  title="Required Field"
+                                  >*</b
+                                >
+                              </div>
+                              <select
+                                size="1"
+                                id="form_114f_fld_9"
+                                name="Country"
+                                class="formFieldMedium"
+                              >
+                                <option value=""></option>
+                                <option
+                                  id="form_114f_fld_9-0"
+                                  value="Australia"
+                                >
+                                  Australia
+                                </option>
+                                <option id="form_114f_fld_9-1" value="Albania">
+                                  Albania
+                                </option>
+                                <option id="form_114f_fld_9-2" value="Algeria">
+                                  Algeria
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-3"
+                                  value="American Samoa"
+                                >
+                                  American Samoa
+                                </option>
+                                <option id="form_114f_fld_9-4" value="Andorra">
+                                  Andorra
+                                </option>
+                                <option id="form_114f_fld_9-5" value="Angola">
+                                  Angola
+                                </option>
+                                <option id="form_114f_fld_9-6" value="Anguilla">
+                                  Anguilla
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-7"
+                                  value="Antarctica"
+                                >
+                                  Antarctica
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-8"
+                                  value="Antigua and Barbuda"
+                                >
+                                  Antigua and Barbuda
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-9"
+                                  value="Argentina"
+                                >
+                                  Argentina
+                                </option>
+                                <option id="form_114f_fld_9-10" value="Armenia">
+                                  Armenia
+                                </option>
+                                <option id="form_114f_fld_9-11" value="Aruba">
+                                  Aruba
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-12"
+                                  value="Australia"
+                                >
+                                  Australia
+                                </option>
+                                <option id="form_114f_fld_9-13" value="Austria">
+                                  Austria
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-14"
+                                  value="Azerbaijan"
+                                >
+                                  Azerbaijan
+                                </option>
+                                <option id="form_114f_fld_9-15" value="Bahamas">
+                                  Bahamas
+                                </option>
+                                <option id="form_114f_fld_9-16" value="Bahrain">
+                                  Bahrain
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-17"
+                                  value="Bangladesh"
+                                >
+                                  Bangladesh
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-18"
+                                  value="Barbados"
+                                >
+                                  Barbados
+                                </option>
+                                <option id="form_114f_fld_9-19" value="Belarus">
+                                  Belarus
+                                </option>
+                                <option id="form_114f_fld_9-20" value="Belgium">
+                                  Belgium
+                                </option>
+                                <option id="form_114f_fld_9-21" value="Belize">
+                                  Belize
+                                </option>
+                                <option id="form_114f_fld_9-22" value="Benin">
+                                  Benin
+                                </option>
+                                <option id="form_114f_fld_9-23" value="Bermuda">
+                                  Bermuda
+                                </option>
+                                <option id="form_114f_fld_9-24" value="Bhutan">
+                                  Bhutan
+                                </option>
+                                <option id="form_114f_fld_9-25" value="Bolivia">
+                                  Bolivia
+                                </option>
+                                <option id="form_114f_fld_9-26" value="Bonaire">
+                                  Bonaire
+                                </option>
+                                <option id="form_114f_fld_9-27" value="Bosnia">
+                                  Bosnia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-28"
+                                  value="Botswana"
+                                >
+                                  Botswana
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-29"
+                                  value="Bouvet Island"
+                                >
+                                  Bouvet Island
+                                </option>
+                                <option id="form_114f_fld_9-30" value="Brazil">
+                                  Brazil
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-31"
+                                  value="British Indian Ocean Territory"
+                                >
+                                  British Indian Ocean Territory
+                                </option>
+                                <option id="form_114f_fld_9-32" value="Brunei">
+                                  Brunei
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-33"
+                                  value="Bulgaria"
+                                >
+                                  Bulgaria
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-34"
+                                  value="Burkina Faso"
+                                >
+                                  Burkina Faso
+                                </option>
+                                <option id="form_114f_fld_9-35" value="Burundi">
+                                  Burundi
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-36"
+                                  value="Cambodia"
+                                >
+                                  Cambodia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-37"
+                                  value="Cameroon"
+                                >
+                                  Cameroon
+                                </option>
+                                <option id="form_114f_fld_9-38" value="Canada">
+                                  Canada
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-39"
+                                  value="Cape Verde"
+                                >
+                                  Cape Verde
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-40"
+                                  value="Cayman Islands"
+                                >
+                                  Cayman Islands
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-41"
+                                  value="Central African Republic"
+                                >
+                                  Central African Republic
+                                </option>
+                                <option id="form_114f_fld_9-42" value="Chad">
+                                  Chad
+                                </option>
+                                <option id="form_114f_fld_9-43" value="Chile">
+                                  Chile
+                                </option>
+                                <option id="form_114f_fld_9-44" value="China">
+                                  China
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-45"
+                                  value="Christmas Island"
+                                >
+                                  Christmas Island
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-46"
+                                  value="Cocos Islands"
+                                >
+                                  Cocos Islands
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-47"
+                                  value="Colombia"
+                                >
+                                  Colombia
+                                </option>
+                                <option id="form_114f_fld_9-48" value="Comoros">
+                                  Comoros
+                                </option>
+                                <option id="form_114f_fld_9-49" value="Congo">
+                                  Congo
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-50"
+                                  value="Congo, Dem. Rep."
+                                >
+                                  Congo, Dem. Rep.
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-51"
+                                  value="Cook Islands"
+                                >
+                                  Cook Islands
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-52"
+                                  value="Costa Rica"
+                                >
+                                  Costa Rica
+                                </option>
+                                <option id="form_114f_fld_9-53" value="Croatia">
+                                  Croatia
+                                </option>
+                                <option id="form_114f_fld_9-54" value="Cuba">
+                                  Cuba
+                                </option>
+                                <option id="form_114f_fld_9-55" value="Curaçao">
+                                  Curaçao
+                                </option>
+                                <option id="form_114f_fld_9-56" value="Cyprus">
+                                  Cyprus
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-57"
+                                  value="Czech Republic"
+                                >
+                                  Czech Republic
+                                </option>
+                                <option id="form_114f_fld_9-58" value="Denmark">
+                                  Denmark
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-59"
+                                  value="Djibouti"
+                                >
+                                  Djibouti
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-60"
+                                  value="Dominica"
+                                >
+                                  Dominica
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-61"
+                                  value="Dominican Republic"
+                                >
+                                  Dominican Republic
+                                </option>
+                                <option id="form_114f_fld_9-62" value="Ecuador">
+                                  Ecuador
+                                </option>
+                                <option id="form_114f_fld_9-63" value="Egypt">
+                                  Egypt
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-64"
+                                  value="El Salvador"
+                                >
+                                  El Salvador
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-65"
+                                  value="Equatorial Guinea"
+                                >
+                                  Equatorial Guinea
+                                </option>
+                                <option id="form_114f_fld_9-66" value="Eritrea">
+                                  Eritrea
+                                </option>
+                                <option id="form_114f_fld_9-67" value="Estonia">
+                                  Estonia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-68"
+                                  value="Ethiopia"
+                                >
+                                  Ethiopia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-69"
+                                  value="Falkland Islands (Malvinas)"
+                                >
+                                  Falkland Islands (Malvinas)
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-70"
+                                  value="Faroe Islands"
+                                >
+                                  Faroe Islands
+                                </option>
+                                <option id="form_114f_fld_9-71" value="Fiji">
+                                  Fiji
+                                </option>
+                                <option id="form_114f_fld_9-72" value="Finland">
+                                  Finland
+                                </option>
+                                <option id="form_114f_fld_9-73" value="France">
+                                  France
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-74"
+                                  value="French Guiana"
+                                >
+                                  French Guiana
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-75"
+                                  value="French Polynesia"
+                                >
+                                  French Polynesia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-76"
+                                  value="French Southern Territories"
+                                >
+                                  French Southern Territories
+                                </option>
+                                <option id="form_114f_fld_9-77" value="Gabon">
+                                  Gabon
+                                </option>
+                                <option id="form_114f_fld_9-78" value="Gambia">
+                                  Gambia
+                                </option>
+                                <option id="form_114f_fld_9-79" value="Georgia">
+                                  Georgia
+                                </option>
+                                <option id="form_114f_fld_9-80" value="Germany">
+                                  Germany
+                                </option>
+                                <option id="form_114f_fld_9-81" value="Ghana">
+                                  Ghana
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-82"
+                                  value="Gibraltar"
+                                >
+                                  Gibraltar
+                                </option>
+                                <option id="form_114f_fld_9-83" value="Greece">
+                                  Greece
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-84"
+                                  value="Greenland"
+                                >
+                                  Greenland
+                                </option>
+                                <option id="form_114f_fld_9-85" value="Grenada">
+                                  Grenada
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-86"
+                                  value="Guadeloupe"
+                                >
+                                  Guadeloupe
+                                </option>
+                                <option id="form_114f_fld_9-87" value="Guam">
+                                  Guam
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-88"
+                                  value="Guatemala"
+                                >
+                                  Guatemala
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-89"
+                                  value="Guernsey"
+                                >
+                                  Guernsey
+                                </option>
+                                <option id="form_114f_fld_9-90" value="Guinea">
+                                  Guinea
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-91"
+                                  value="Guinea-Bissau"
+                                >
+                                  Guinea-Bissau
+                                </option>
+                                <option id="form_114f_fld_9-92" value="Guyana">
+                                  Guyana
+                                </option>
+                                <option id="form_114f_fld_9-93" value="Haiti">
+                                  Haiti
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-94"
+                                  value="Heard Island"
+                                >
+                                  Heard Island
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-95"
+                                  value="Honduras"
+                                >
+                                  Honduras
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-96"
+                                  value="Hong Kong"
+                                >
+                                  Hong Kong
+                                </option>
+                                <option id="form_114f_fld_9-97" value="Hungary">
+                                  Hungary
+                                </option>
+                                <option id="form_114f_fld_9-98" value="Iceland">
+                                  Iceland
+                                </option>
+                                <option id="form_114f_fld_9-99" value="India">
+                                  India
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-100"
+                                  value="Indonesia"
+                                >
+                                  Indonesia
+                                </option>
+                                <option id="form_114f_fld_9-101" value="Iran">
+                                  Iran
+                                </option>
+                                <option id="form_114f_fld_9-102" value="Iraq">
+                                  Iraq
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-103"
+                                  value="Ireland"
+                                >
+                                  Ireland
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-104"
+                                  value="Isle of Man"
+                                >
+                                  Isle of Man
+                                </option>
+                                <option id="form_114f_fld_9-105" value="Israel">
+                                  Israel
+                                </option>
+                                <option id="form_114f_fld_9-106" value="Italy">
+                                  Italy
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-107"
+                                  value="Ivory Coast"
+                                >
+                                  Ivory Coast
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-108"
+                                  value="Jamaica"
+                                >
+                                  Jamaica
+                                </option>
+                                <option id="form_114f_fld_9-109" value="Japan">
+                                  Japan
+                                </option>
+                                <option id="form_114f_fld_9-110" value="Jersey">
+                                  Jersey
+                                </option>
+                                <option id="form_114f_fld_9-111" value="Jordan">
+                                  Jordan
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-112"
+                                  value="Kazakhstan"
+                                >
+                                  Kazakhstan
+                                </option>
+                                <option id="form_114f_fld_9-113" value="Kenya">
+                                  Kenya
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-114"
+                                  value="Kiribati"
+                                >
+                                  Kiribati
+                                </option>
+                                <option id="form_114f_fld_9-115" value="Korea">
+                                  Korea
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-116"
+                                  value="Korea, DPRK"
+                                >
+                                  Korea, DPRK
+                                </option>
+                                <option id="form_114f_fld_9-117" value="Kosovo">
+                                  Kosovo
+                                </option>
+                                <option id="form_114f_fld_9-118" value="Kuwait">
+                                  Kuwait
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-119"
+                                  value="Kyrgyzstan"
+                                >
+                                  Kyrgyzstan
+                                </option>
+                                <option id="form_114f_fld_9-120" value="Laos">
+                                  Laos
+                                </option>
+                                <option id="form_114f_fld_9-121" value="Latvia">
+                                  Latvia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-122"
+                                  value="Lebanon"
+                                >
+                                  Lebanon
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-123"
+                                  value="Lesotho"
+                                >
+                                  Lesotho
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-124"
+                                  value="Liberia"
+                                >
+                                  Liberia
+                                </option>
+                                <option id="form_114f_fld_9-125" value="Libya">
+                                  Libya
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-126"
+                                  value="Liechtenstein"
+                                >
+                                  Liechtenstein
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-127"
+                                  value="Lithuania"
+                                >
+                                  Lithuania
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-128"
+                                  value="Luxembourg"
+                                >
+                                  Luxembourg
+                                </option>
+                                <option id="form_114f_fld_9-129" value="Macao">
+                                  Macao
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-130"
+                                  value="Macedonia"
+                                >
+                                  Macedonia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-131"
+                                  value="Madagascar"
+                                >
+                                  Madagascar
+                                </option>
+                                <option id="form_114f_fld_9-132" value="Malawi">
+                                  Malawi
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-133"
+                                  value="Malaysia"
+                                >
+                                  Malaysia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-134"
+                                  value="Maldives"
+                                >
+                                  Maldives
+                                </option>
+                                <option id="form_114f_fld_9-135" value="Mali">
+                                  Mali
+                                </option>
+                                <option id="form_114f_fld_9-136" value="Malta">
+                                  Malta
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-137"
+                                  value="Marshall Islands"
+                                >
+                                  Marshall Islands
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-138"
+                                  value="Martinique"
+                                >
+                                  Martinique
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-139"
+                                  value="Mauritania"
+                                >
+                                  Mauritania
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-140"
+                                  value="Mauritius"
+                                >
+                                  Mauritius
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-141"
+                                  value="Mayotte"
+                                >
+                                  Mayotte
+                                </option>
+                                <option id="form_114f_fld_9-142" value="Mexico">
+                                  Mexico
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-143"
+                                  value="Micronesia, Fed."
+                                >
+                                  Micronesia, Fed.
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-144"
+                                  value="Moldova"
+                                >
+                                  Moldova
+                                </option>
+                                <option id="form_114f_fld_9-145" value="Monaco">
+                                  Monaco
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-146"
+                                  value="Mongolia"
+                                >
+                                  Mongolia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-147"
+                                  value="Montenegro"
+                                >
+                                  Montenegro
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-148"
+                                  value="Montserrat"
+                                >
+                                  Montserrat
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-149"
+                                  value="Morocco"
+                                >
+                                  Morocco
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-150"
+                                  value="Mozambique"
+                                >
+                                  Mozambique
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-151"
+                                  value="Myanmar"
+                                >
+                                  Myanmar
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-152"
+                                  value="Namibia"
+                                >
+                                  Namibia
+                                </option>
+                                <option id="form_114f_fld_9-153" value="Nauru">
+                                  Nauru
+                                </option>
+                                <option id="form_114f_fld_9-154" value="Nepal">
+                                  Nepal
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-155"
+                                  value="Netherlands"
+                                >
+                                  Netherlands
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-156"
+                                  value="New Caledonia"
+                                >
+                                  New Caledonia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-157"
+                                  value="New Zealand"
+                                >
+                                  New Zealand
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-158"
+                                  value="Nicaragua"
+                                >
+                                  Nicaragua
+                                </option>
+                                <option id="form_114f_fld_9-159" value="Niger">
+                                  Niger
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-160"
+                                  value="Nigeria"
+                                >
+                                  Nigeria
+                                </option>
+                                <option id="form_114f_fld_9-161" value="Niue">
+                                  Niue
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-162"
+                                  value="Norfolk Island"
+                                >
+                                  Norfolk Island
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-163"
+                                  value="Northern Marianas"
+                                >
+                                  Northern Marianas
+                                </option>
+                                <option id="form_114f_fld_9-164" value="Norway">
+                                  Norway
+                                </option>
+                                <option id="form_114f_fld_9-165" value="Oman">
+                                  Oman
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-166"
+                                  value="Pakistan"
+                                >
+                                  Pakistan
+                                </option>
+                                <option id="form_114f_fld_9-167" value="Palau">
+                                  Palau
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-168"
+                                  value="Palestinian Terr."
+                                >
+                                  Palestinian Terr.
+                                </option>
+                                <option id="form_114f_fld_9-169" value="Panama">
+                                  Panama
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-170"
+                                  value="Papua New Guinea"
+                                >
+                                  Papua New Guinea
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-171"
+                                  value="Paraguay"
+                                >
+                                  Paraguay
+                                </option>
+                                <option id="form_114f_fld_9-172" value="Peru">
+                                  Peru
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-173"
+                                  value="Philippines"
+                                >
+                                  Philippines
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-174"
+                                  value="Pitcairn"
+                                >
+                                  Pitcairn
+                                </option>
+                                <option id="form_114f_fld_9-175" value="Poland">
+                                  Poland
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-176"
+                                  value="Portugal"
+                                >
+                                  Portugal
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-177"
+                                  value="Puerto Rico"
+                                >
+                                  Puerto Rico
+                                </option>
+                                <option id="form_114f_fld_9-178" value="Qatar">
+                                  Qatar
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-179"
+                                  value="Romania"
+                                >
+                                  Romania
+                                </option>
+                                <option id="form_114f_fld_9-180" value="Russia">
+                                  Russia
+                                </option>
+                                <option id="form_114f_fld_9-181" value="Rwanda">
+                                  Rwanda
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-182"
+                                  value="Réunion"
+                                >
+                                  Réunion
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-183"
+                                  value="Saint Barthélemy"
+                                >
+                                  Saint Barthélemy
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-184"
+                                  value="Saint Helena"
+                                >
+                                  Saint Helena
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-185"
+                                  value="Saint Kitts and Nevis"
+                                >
+                                  Saint Kitts and Nevis
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-186"
+                                  value="Saint Lucia"
+                                >
+                                  Saint Lucia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-187"
+                                  value="Saint Martin (French)"
+                                >
+                                  Saint Martin (French)
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-188"
+                                  value="Saint Pierre and Miquelon"
+                                >
+                                  Saint Pierre and Miquelon
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-189"
+                                  value="Saint Vincent"
+                                >
+                                  Saint Vincent
+                                </option>
+                                <option id="form_114f_fld_9-190" value="Samoa">
+                                  Samoa
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-191"
+                                  value="San Marino"
+                                >
+                                  San Marino
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-192"
+                                  value="Sao Tome &amp; Principe"
+                                >
+                                  Sao Tome &amp; Principe
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-193"
+                                  value="Saudi Arabia"
+                                >
+                                  Saudi Arabia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-194"
+                                  value="Senegal"
+                                >
+                                  Senegal
+                                </option>
+                                <option id="form_114f_fld_9-195" value="Serbia">
+                                  Serbia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-196"
+                                  value="Seychelles"
+                                >
+                                  Seychelles
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-197"
+                                  value="Sierra Leone"
+                                >
+                                  Sierra Leone
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-198"
+                                  value="Singapore"
+                                >
+                                  Singapore
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-199"
+                                  value="Sint Maarten (Dutch)"
+                                >
+                                  Sint Maarten (Dutch)
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-200"
+                                  value="Slovakia"
+                                >
+                                  Slovakia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-201"
+                                  value="Slovenia"
+                                >
+                                  Slovenia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-202"
+                                  value="Solomon Islands"
+                                >
+                                  Solomon Islands
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-203"
+                                  value="Somalia"
+                                >
+                                  Somalia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-204"
+                                  value="South Africa"
+                                >
+                                  South Africa
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-205"
+                                  value="South Georgia and the South Sandwich Islands"
+                                >
+                                  South Georgia and the South Sandwich Islands
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-206"
+                                  value="South Sudan"
+                                >
+                                  South Sudan
+                                </option>
+                                <option id="form_114f_fld_9-207" value="Spain">
+                                  Spain
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-208"
+                                  value="Sri Lanka"
+                                >
+                                  Sri Lanka
+                                </option>
+                                <option id="form_114f_fld_9-209" value="Sudan">
+                                  Sudan
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-210"
+                                  value="Suriname"
+                                >
+                                  Suriname
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-211"
+                                  value="Svalbard"
+                                >
+                                  Svalbard
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-212"
+                                  value="Swaziland"
+                                >
+                                  Swaziland
+                                </option>
+                                <option id="form_114f_fld_9-213" value="Sweden">
+                                  Sweden
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-214"
+                                  value="Switzerland"
+                                >
+                                  Switzerland
+                                </option>
+                                <option id="form_114f_fld_9-215" value="Syria">
+                                  Syria
+                                </option>
+                                <option id="form_114f_fld_9-216" value="Taiwan">
+                                  Taiwan
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-217"
+                                  value="Tajikistan"
+                                >
+                                  Tajikistan
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-218"
+                                  value="Tanzania"
+                                >
+                                  Tanzania
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-219"
+                                  value="Thailand"
+                                >
+                                  Thailand
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-220"
+                                  value="Timor-Leste"
+                                >
+                                  Timor-Leste
+                                </option>
+                                <option id="form_114f_fld_9-221" value="Togo">
+                                  Togo
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-222"
+                                  value="Tokelau"
+                                >
+                                  Tokelau
+                                </option>
+                                <option id="form_114f_fld_9-223" value="Tonga">
+                                  Tonga
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-224"
+                                  value="Trinidad and Tobago"
+                                >
+                                  Trinidad and Tobago
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-225"
+                                  value="Tunisia"
+                                >
+                                  Tunisia
+                                </option>
+                                <option id="form_114f_fld_9-226" value="Turkey">
+                                  Turkey
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-227"
+                                  value="Turkmenistan"
+                                >
+                                  Turkmenistan
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-228"
+                                  value="Turks and Caicos"
+                                >
+                                  Turks and Caicos
+                                </option>
+                                <option id="form_114f_fld_9-229" value="Tuvalu">
+                                  Tuvalu
+                                </option>
+                                <option id="form_114f_fld_9-230" value="U.A.E.">
+                                  U.A.E.
+                                </option>
+                                <option id="form_114f_fld_9-231" value="Uganda">
+                                  Uganda
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-232"
+                                  value="Ukraine"
+                                >
+                                  Ukraine
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-233"
+                                  value="United Kingdom"
+                                >
+                                  United Kingdom
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-234"
+                                  value="United States"
+                                >
+                                  United States
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-235"
+                                  value="United States Minor Outlying Islands"
+                                >
+                                  United States Minor Outlying Islands
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-236"
+                                  value="Uruguay"
+                                >
+                                  Uruguay
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-237"
+                                  value="Uzbekistan"
+                                >
+                                  Uzbekistan
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-238"
+                                  value="Vanuatu"
+                                >
+                                  Vanuatu
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-239"
+                                  value="Vatican City"
+                                >
+                                  Vatican City
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-240"
+                                  value="Venezuela"
+                                >
+                                  Venezuela
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-241"
+                                  value="Viet Nam"
+                                >
+                                  Viet Nam
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-242"
+                                  value="Virgin Islands, British"
+                                >
+                                  Virgin Islands, British
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-243"
+                                  value="Virgin Islands, U.S."
+                                >
+                                  Virgin Islands, U.S.
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-244"
+                                  value="Wallis and Futuna"
+                                >
+                                  Wallis and Futuna
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-245"
+                                  value="Western Sahara"
+                                >
+                                  Western Sahara
+                                </option>
+                                <option id="form_114f_fld_9-246" value="Yemen">
+                                  Yemen
+                                </option>
+                                <option id="form_114f_fld_9-247" value="Zambia">
+                                  Zambia
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-248"
+                                  value="Zimbabwe"
+                                >
+                                  Zimbabwe
+                                </option>
+                                <option
+                                  id="form_114f_fld_9-249"
+                                  value="Åland Islands"
+                                >
+                                  Åland Islands
+                                </option>
+                              </select>
+                            </div>
+                            <script type="text/javascript">
+                              if (typeof addRequiredField != "undefined") {
+                                addRequiredField("form_114f_fld_9");
+                              }
+                            </script>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="ao_tbl_cell"
+                        style="padding-left: 10px; padding-right: 10px"
+                        align="center"
+                      >
+                        <div class="formField">
+                          <div class="formSectionDescription">
+                            <p>
+                              <span
+                                >You will be able to access the e-book now and
+                                in a few days Microsoft will email you the
+                                requested content.</span
+                              >
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="ao_tbl_cell"
+                        style="padding-left: 10px; padding-right: 10px"
+                        align="center"
+                      >
+                        <div class="formInputBlock">
+                          <div align="left">
+                            <div class="formField">
+                              <table cellspacing="0" cellpadding="0">
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      <div
+                                        class="formField1Column"
+                                        style="overflow: hidden"
+                                      >
+                                        <table
+                                          cellspacing="0"
+                                          cellpadding="1"
+                                          class="formField1Column"
+                                        >
+                                          <tbody>
+                                            <tr>
+                                              <td width="20" align="left">
+                                                <input
+                                                  type="checkbox"
+                                                  name="OptIn"
+                                                  id="form_114f_fld_12-0"
+                                                  value="Yes"
+                                                />
+                                              </td>
+                                              <td
+                                                width="*"
+                                                align="left"
+                                                style="
+                                                  padding-top: 3px;
+                                                  padding-right: 10px;
+                                                "
+                                              >
+                                                <label
+                                                  for="form_114f_fld_12-0"
+                                                  class="formFieldLabel checkboxFieldLabel"
+                                                  >I would like information,
+                                                  tips, and offers about
+                                                  Solutions for Businesses and
+                                                  Organizations and other
+                                                  Microsoft products and
+                                                  services. To withdraw consent
+                                                  or manage your contact
+                                                  preferences, visit the
+                                                  <a
+                                                    href="https://go.microsoft.com/fwlink/?LinkId=243189"
+                                                    target="_blank"
+                                                    >Promotional Communications
+                                                    Manager</a
+                                                  >.
+                                                  <a
+                                                    href="https://go.microsoft.com/fwlink/?LinkId=521839"
+                                                    target="_blank"
+                                                    >Privacy Statement.</a
+                                                  >
+                                                </label>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <script type="text/javascript">
+                              if (typeof addRequiredFieldGroup != "undefined") {
+                                addRequiredFieldGroup("form_114f_fld_12", 1);
+                              }
+                            </script>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        class="ao_tbl_cell"
+                        style="padding-left: 10px; padding-right: 10px"
+                        align="center"
+                      >
+                        <div class="formInputBlock">
+                          <div align="left">
+                            <div class="formField">
+                              <table width="100%">
+                                <tbody>
+                                  <tr>
+                                    <td
+                                      align="left"
+                                      id="form_114f_ao_submit_button"
+                                    >
+                                      <a
+                                        id="form_114f_ao_submit_href"
+                                        href="javascript: doSubmit(document.getElementById(&#39;form_114f&#39;))"
+                                        ><img
+                                          src="./image.gif"
+                                          alt="register now"
+                                          border="0"
+                                      /></a>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- -------------------------------------------------------------------------------------------- -->
+            </td>
+          </tr>
+          <tr>
+            <td align="center" style="margin: 0 auto">
+              <!-- -------------------------------------------------------------------------------------------- -->
+              <!-- -------------------------------------------------------------------------------------------- -->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!--[if mso]></td></tr></tbody><![endif]-->
+      <!-- -------------------------------------------------------------------------------------------- -->
+    </form>
+    <div id="prefillDiv" style="display: none"></div>
+  </body>
+</html>
