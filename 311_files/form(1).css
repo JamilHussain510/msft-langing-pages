@@ -207,6 +207,7 @@
     input[type="checkbox"]
         {
         -moz-appearance: checkbox;
+        justify-items: center;
         }
     
     input[type="radio"]
