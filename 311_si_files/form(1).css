@@ -1,0 +1,223 @@
+    
+/* General Form Settings */
+    
+    TABLE, TR, TD, DIV, TEXTAREA, INPUT, SELECT, UL, OL
+        {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10px;
+        }
+    
+    BODY
+        {
+        margin: 0px;
+        padding: 0px 0px 0px 0px;
+        }
+    
+    
+/* Form Field Styles */
+    
+    .formField
+        {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        -moz-appearance: none;
+        }
+    
+    .formFieldLabel
+        {
+        padding-bottom: 2px;
+        }
+    
+    .formFieldText
+        {
+        height: 20px;
+        border-style: none;
+        border-left: #999999 solid 1px;
+        border-top: #999999 solid 1px;
+        border-right: #999999 solid 1px;
+        border-bottom: #999999 solid 1px;
+        font-size: 12px;
+        color: #000000;
+        background-color: #FFFFFF;
+        }
+    
+    .formTextArea
+        {
+        border-style: none;
+        border-left: #999999 solid 1px;
+        border-top: #999999 solid 1px;
+        border-right: #999999 solid 1px;
+        border-bottom: #999999 solid 1px;
+        font-size: 12px;
+        color: #000000;
+        background-color: #FFFFFF;
+        }
+    
+    .formFieldFile
+        {
+        height: 20px;
+        border-style: none;
+        border-left: #999999 solid 1px;
+        border-top: #999999 solid 1px;
+        border-right: #999999 solid 1px;
+        border-bottom: #999999 solid 1px;
+        font-size: 12px;
+        color: #000000;
+        background-color: #FFFFFF;
+        }
+    
+    .formSectionDescription
+        {
+        padding-bottom: 10px;
+        font-size: 15pt;
+        text-align: left;
+        width: 200px;
+        }
+    
+    
+/* Form Field Sizes */
+    
+    .formInputBlock
+        {
+        width: 200px;
+        }
+    
+    .formFieldSmall
+        {
+        width: 150px;
+        }
+    
+    .formFieldMedium
+        {
+        width: 200px;
+        }
+    
+    .formFieldLarge
+        {
+        width: 400px;
+        }
+    
+    .formFieldMediumLeft
+        {
+        width: 195px;
+        }
+    
+    .formFieldMediumRight
+        {
+        width: 200px;
+        }
+    
+    .formTextAreaSmall
+        {
+        width: 400px;
+        height: 57px;
+        }
+    
+    .formTextAreaMedium
+        {
+        width: 400px;
+        height: 114px;
+        }
+    
+    .formTextAreaLarge
+        {
+        width: 400px;
+        height: 190px;
+        }
+    
+    .formTextAreaWidthSmall
+        {
+        height: 133px;
+        }
+    
+    .formTextAreaWidthMedium
+        {
+        height: 200px;
+        }
+    
+    .formTextAreaWidthLarge
+        {
+        height: 400px;
+        }
+    
+    .formField1Column
+        {
+        width: 200px;
+        }
+    
+    .formField2Column
+        {
+        width: 200px;
+        }
+    
+    .formField3Column
+        {
+        width: 133px;
+        }
+    
+    .formField4Column
+        {
+        width: 100px;
+        }
+    
+    
+/* Error Handling Support */
+    
+    .formFieldLabelGood
+        {
+        padding-bottom: 2px;
+        url(/acton/image/12x12yes.gif) center right no-repeat;
+        }
+    
+    .formFieldLabelBad
+        {
+        padding-bottom: 2px;
+        url(/acton/image/12x12no.gif) center right no-repeat;
+        }
+    
+    .formFieldTextError
+        {
+        height: 19px;
+        border-style: none;
+        border-left: #CC0000 solid 1px;
+        border-top: #CC0000 solid 1px;
+        border-right: #CC0000 solid 1px;
+        border-bottom: #CC0000 solid 1px;
+        font-size: 11px;
+        color: #CC0000;
+        background-color: #FFFFCC;
+        }
+    
+    .formFieldFileError
+        {
+        height: 19px;
+        border-style: none;
+        border-left: #CC0000 solid 1px;
+        border-top: #CC0000 solid 1px;
+        border-right: #CC0000 solid 1px;
+        border-bottom: #CC0000 solid 1px;
+        font-size: 11px;
+        color: #CC0000;
+        background-color: #FFFFCC;
+        }
+    
+    
+/* Standard Browser Look & Feel Housekeeping */
+    
+    input[type="checkbox"]
+        {
+        -moz-appearance: checkbox;
+        }
+    
+    input[type="radio"]
+        {
+        -moz-appearance: radio;
+        }
+    
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button
+        {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+    
